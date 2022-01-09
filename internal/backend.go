@@ -35,5 +35,5 @@ var (
 type Backend interface {
 	CreateTable(statement *CreateStatement) error
 	Insert(statement *InsertStatement) error
-	Select(statement *SelectStatement) error
+	Select(statement *SelectStatement) (*Results, error)
 }

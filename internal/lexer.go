@@ -87,7 +87,7 @@ lex:
 		if len(tokens) > 0 {
 			errorHint = "after " + tokens[len(tokens)-1].value
 		}
-		return nil, fmt.Errorf("unidetified token %s, at %d:%d", errorHint, cur.loc.line, cur.loc.column)
+		return nil, fmt.Errorf("unidentified token %s, at %d:%d", errorHint, cur.loc.line, cur.loc.column)
 	}
 	return tokens, nil
 }
@@ -150,10 +150,11 @@ func lexCharacterDelimited(source string, ic cursor, delimiter byte) (*token, cu
 	var value []byte
 	for ; cur.pointer < uint(len(source)); cur.pointer++ {
 		c := source[cur.pointer]
-
 		if c == delimiter {
 			// Escape seq contains 2 same characters
 			if cur.pointer+1 >= uint(len(source)) || source[cur.pointer+1] != delimiter {
+				cur.pointer++
+				cur.loc.column++
 				return &token{
 					value: string(value),
 					loc:   ic.loc,
